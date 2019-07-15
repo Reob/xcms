@@ -18,6 +18,7 @@ func (c *BaseController) Prepare() {
 	//附值
 	c.controllerName, c.actionName = c.GetControllerAndAction()
 	beego.Informational(c.controllerName, c.actionName)
+
 	user := c.auth()
 	c.Data["Menu"] = models.MenuTreeStruct(user)
 }
@@ -63,8 +64,6 @@ func (c *BaseController) listJsonResult(code consts.JsonResultCode, msg string, 
 
 func (c *BaseController) auth() models.UserModel {
 	user := c.GetSession("xcmsuser")
-	beego.Debug("base auth" + c.controllerName)
-	beego.Debug(user)
 	if user == nil {
 		c.Redirect("/login", 302)
 		c.StopRun()
@@ -72,5 +71,4 @@ func (c *BaseController) auth() models.UserModel {
 	} else {
 		return user.(models.UserModel)
 	}
-
 }
